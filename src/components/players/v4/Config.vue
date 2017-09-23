@@ -27,20 +27,20 @@
           <el-form label-position="top" label-width="100px">
             <el-form-item label="Available">
                 <el-checkbox @input="setInfoTab" :checked="availableTabs.info" label="info">Info</el-checkbox>
-                <el-checkbox @input="setChaptersTab" :checked="components.tabs.chapters.visible" label="chapters">Chapters</el-checkbox>
-                <el-checkbox @input="setShareTab" :checked="components.tabs.share.visible" label="share">Share</el-checkbox>
-                <el-checkbox @input="setDownloadTab" :checked="components.tabs.download.visible" label="download">Download</el-checkbox>
-                <el-checkbox @input="setAudioTab" :checked="components.tabs.audio.visible" label="audio">Audio</el-checkbox>
+                <el-checkbox @input="setChaptersTab" :checked="availableTabs.chapters" label="chapters">Chapters</el-checkbox>
+                <el-checkbox @input="setShareTab" :checked="availableTabs.share" label="share">Share</el-checkbox>
+                <el-checkbox @input="setDownloadTab" :checked="availableTabs.download" label="download">Download</el-checkbox>
+                <el-checkbox @input="setAudioTab" :checked="availableTabs.audio" label="audio">Audio</el-checkbox>
             </el-form-item>
 
             <el-form-item label="Default Active">
-              <!-- <el-select v-model="value" placeholder="Select">
-                <el-option value="info" label="Info"></el-option>
-                <el-option value="chapters" label="Chapters"></el-option>
-                <el-option value="share" label="Share"></el-option>
-                <el-option value="download" label="Download"></el-option>
-                <el-option value="audio" label="Audio"></el-option>
-              </el-select> -->
+              <el-select value="info" placeholder="Select" :disabled="!hasTabs">
+                <el-option value="info" label="Info" v-if="availableTabs.info"></el-option>
+                <el-option value="chapters" label="Chapters" v-if="availableTabs.chapters"></el-option>
+                <el-option value="share" label="Share" v-if="availableTabs.share"></el-option>
+                <el-option value="download" label="Download" v-if="availableTabs.download"></el-option>
+                <el-option value="audio" label="Audio" v-if="availableTabs.audio"></el-option>
+              </el-select>
             </el-form-item>
           </el-form>
         </el-col>
@@ -73,8 +73,20 @@ export default {
     },
     availableTabs () {
       return {
-        info: get(this.components, 'tabs.info.visible', false)
+        info: get(this.components, 'tabs.info.visible', false),
+        chapters: get(this.components, 'tabs.chapters.visible', false),
+        share: get(this.components, 'tabs.share.visible', false),
+        download: get(this.components, 'tabs.download.visible', false),
+        audio: get(this.components, 'tabs.audio.visible', false)
       }
+    },
+    hasTabs () {
+      return
+        this.availableTabs.info ||
+        this.availableTabs.chapters ||
+        this.availableTabs.share ||
+        this.availableTabs.download ||
+        this.availableTabs.audio
     },
     playerConfig () {
       const meta = this.$store.state.player.meta
@@ -118,7 +130,7 @@ export default {
       this.initPlayer(this.playerConfig)
     },
     setShareTab (visible) {
-      this.$store.commit('setAvailableTabs', {tab: 'chapters', visible})
+      this.$store.commit('setAvailableTabs', {tab: 'share', visible})
       this.initPlayer(this.playerConfig)
     },
     setDownloadTab (visible) {
