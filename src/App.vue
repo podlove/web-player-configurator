@@ -15,6 +15,7 @@ export default {
   @import '~element-ui/lib/theme-default/index.css';
   @import 'styles/variables';
   @import 'styles/form';
+  @import 'styles/fixes';
 
   html {
     box-sizing: border-box;

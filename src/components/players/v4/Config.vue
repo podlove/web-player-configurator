@@ -1,13 +1,13 @@
 <template>
   <div class="player-config v4">
     <el-row class="preview">
-      <el-col :span="18">
+      <el-col :span="24">
         <preview @ready="onReady" :config="playerConfig"></preview>
       </el-col>
     </el-row>
     <div class="config" v-if="playerReady">
       <el-row :gutter="30">
-        <el-col :span="12">
+        <el-col :xs="24" :md="12">
           <h4>Theme</h4>
           <el-form label-position="top" label-width="100px">
             <el-form-item label="Main">
@@ -22,7 +22,7 @@
             </el-form-item>
           </el-form>
         </el-col>
-        <el-col :span="12">
+        <el-col :xs="24" :md="12">
           <h4>Tabs</h4>
           <el-form label-position="top" label-width="100px">
             <el-form-item label="Available">
@@ -34,7 +34,13 @@
             </el-form-item>
 
             <el-form-item label="Default Active">
-              <el-select value="info" placeholder="Select" :disabled="!hasTabs">
+              <el-select clearable @input="setActiveTab" :value="activeTab" placeholder="Select" :disabled="
+                !availableTabs.info &&
+                !availableTabs.chapters &&
+                !availableTabs.share &&
+                !availableTabs.download &&
+                !availableTabs.audio
+              ">
                 <el-option value="info" label="Info" v-if="availableTabs.info"></el-option>
                 <el-option value="chapters" label="Chapters" v-if="availableTabs.chapters"></el-option>
                 <el-option value="share" label="Share" v-if="availableTabs.share"></el-option>
@@ -45,15 +51,34 @@
           </el-form>
         </el-col>
       </el-row>
+
+      <el-row :gutter="30">
+        <el-col :xs="24" :md="12">
+          <h4>Components</h4>
+           <el-form label-position="top" label-width="100px">
+            <el-form-item>
+              <el-checkbox class="block-checkbox" @input="setHeader" :checked="header" label="chapters">Header</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="setProgressBar" :checked="progressbar" label="chapters">Progress</el-checkbox>
+            </el-form-item>
+           </el-form>
+        </el-col>
+        <el-col :xs="24" :md="12">
+          <h4>Controls</h4>
+            <el-form label-position="top" label-width="100px">
+            <el-form-item>
+              <el-checkbox class="block-checkbox" @input="setStepperControls" :checked="controls.steppers" label="steppers">Steppers</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="setChaptersControls" :checked="controls.chapters" label="chapters">Chapters</el-checkbox>
+            </el-form-item>
+           </el-form>
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
 
 <script>
-import { get } from 'lodash'
+import { get, head } from 'lodash'
 import Preview from './Preview.vue'
-
-import '@/../static/v4/embed.js';
 
 export default {
   data () {
@@ -80,13 +105,22 @@ export default {
         audio: get(this.components, 'tabs.audio.visible', false)
       }
     },
-    hasTabs () {
-      return
-        this.availableTabs.info ||
-        this.availableTabs.chapters ||
-        this.availableTabs.share ||
-        this.availableTabs.download ||
-        this.availableTabs.audio
+    controls () {
+      return {
+        chapters: get(this.components, 'controls.chapters', false),
+        steppers: get(this.components, 'controls.steppers', false)
+      }
+    },
+    activeTab () {
+      const activeTab = Object.keys(this.tabs).filter(tab => this.tabs[tab])
+      return head(activeTab)
+    },
+    header () {
+      const active = get(this.components, 'header', false)
+      return !!active
+    },
+    progressbar () {
+      return get(this.components, 'progressbar.visible', false)
     },
     playerConfig () {
       const meta = this.$store.state.player.meta
@@ -111,15 +145,16 @@ export default {
       this.setTheme({...this.theme, main: color})
     },
     previewHighlightThemeColor(color) {
+      color = color === 'transparent' ? null : color
       this.setTheme({...this.theme, highlight: color})
     },
     setMainThemeColor (color) {
       this.$store.commit('setMainColor', color)
-      this.setTheme(this.theme)
+      this.initPlayer(this.playerConfig)
     },
     setHighlightThemeColor (color) {
       this.$store.commit('setHighlightColor', color)
-      this.setTheme(this.theme)
+      this.initPlayer(this.playerConfig)
     },
     setInfoTab (visible) {
       this.$store.commit('setAvailableTabs', {tab: 'info', visible})
@@ -139,6 +174,26 @@ export default {
     },
     setAudioTab (visible) {
       this.$store.commit('setAvailableTabs', {tab: 'audio', visible})
+      this.initPlayer(this.playerConfig)
+    },
+    setActiveTab (tab) {
+      this.$store.commit('setActiveTab', tab)
+      this.initPlayer(this.playerConfig)
+    },
+    setHeader (active) {
+      this.$store.commit('setHeaderComponent', active)
+      this.initPlayer(this.playerConfig)
+    },
+    setProgressBar (active) {
+      this.$store.commit('setProgressBarComponent', active)
+      this.initPlayer(this.playerConfig)
+    },
+    setStepperControls (active) {
+      this.$store.commit('setSteppersComponent', active)
+      this.initPlayer(this.playerConfig)
+    },
+    setChaptersControls (active) {
+      this.$store.commit('setChaptersComponent', active)
       this.initPlayer(this.playerConfig)
     },
     onReady(store) {

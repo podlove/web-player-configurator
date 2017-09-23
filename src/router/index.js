@@ -5,11 +5,10 @@ import Player from '@/components/Players'
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
-      path: '/',
-      name: 'Player',
-      component: Player
-    }
-  ]
+  mode: 'history',
+  routes: [{
+    path: '/',
+    name: 'Player',
+    component: Player
+  }]
 })

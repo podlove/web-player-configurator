@@ -34,6 +34,8 @@
             </el-select>
           </el-form-item>
         </el-form>
+
+        <el-button type="primary" size="large">Save</el-button>
       </el-col>
     </el-row>
   </div>
@@ -42,17 +44,12 @@
 <script>
 import { mapState } from 'vuex'
 
-import PlayerV2 from './players/PlayerV2.vue'
+import PlayerV2 from './players/v2/Config.vue'
 import PlayerV3 from './players/PlayerV3.vue'
 import PlayerV4 from './players/v4/Config.vue'
 import Podigee from './players/Podigee.vue'
 
 export default {
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
-    }
-  },
   computed: mapState({
     players: state => state.player.players,
     active: state => state.player.active,
@@ -77,8 +74,9 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
   @import '../styles/variables';
+  @import '../styles/player';
 
   .sidebar {
     padding: 0 $spacing;
@@ -86,5 +84,6 @@ export default {
 
   .players {
     border-right: 1px solid $border-color;
+    padding-right: $spacing;
   }
 </style>
