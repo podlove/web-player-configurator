@@ -1,10 +1,5 @@
 <template>
   <div class="player-config v4">
-    <el-row class="preview">
-      <el-col :span="24">
-        <preview @ready="onReady" :config="playerConfig"></preview>
-      </el-col>
-    </el-row>
     <div class="config" v-if="playerReady">
       <el-row :gutter="30">
         <el-col :xs="24" :md="12">
@@ -54,6 +49,7 @@
 
       <el-row :gutter="30">
         <el-col :xs="24" :md="12">
+
           <h4>Components</h4>
            <el-form label-position="top" label-width="100px">
             <el-form-item>
@@ -63,6 +59,7 @@
            </el-form>
         </el-col>
         <el-col :xs="24" :md="12">
+
           <h4>Controls</h4>
             <el-form label-position="top" label-width="100px">
             <el-form-item>
@@ -70,6 +67,13 @@
               <el-checkbox class="block-checkbox" @input="setChaptersControls" :checked="controls.chapters" label="chapters">Chapters</el-checkbox>
             </el-form-item>
            </el-form>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="24">
+          <h3>Preview</h3>
+          <preview @ready="onReady" :config="playerConfig"></preview>
         </el-col>
       </el-row>
     </div>
