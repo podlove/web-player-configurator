@@ -45,7 +45,7 @@
 import { mapState } from 'vuex'
 
 import PlayerV2 from './players/v2/Config.vue'
-import PlayerV3 from './players/PlayerV3.vue'
+import PlayerV3 from './players/v3/Config.vue'
 import PlayerV4 from './players/v4/Config.vue'
 import Podigee from './players/Podigee.vue'
 

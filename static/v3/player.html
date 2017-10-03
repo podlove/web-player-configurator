@@ -1,0 +1,48 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Which format plays?</title>
+
+    <link href="css/vendor/progress-polyfill.css" rel="stylesheet" media="screen" type="text/css" />
+
+    <script src="js/vendor/html5shiv.js"></script>
+    <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/vendor/progress-polyfill.min.js"></script>
+  </head>
+  <body>
+    <audio controls="controls"></audio>
+
+    <script src="js/vendor/jquery.min.js"></script>
+    <script src="js/podlove-web-player.js"></script>
+
+    <script>
+      var audio$ = $('audio')
+      var head$ = $('head')
+
+      var searchParams = new URLSearchParams(location.search)
+      var theme = searchParams.get('theme') || 'pwp-dark-green'
+      var config = searchParams.get('config')
+
+      config = JSON.parse(decodeURIComponent(config))
+
+      var cssTheme$ = $('<link />')
+      cssTheme$.attr('rel', 'stylesheet')
+      cssTheme$.attr('href', 'css/' + config.activeTheme + '.css')
+      cssTheme$.attr('media', 'screen')
+      cssTheme$.attr('type', 'text/css')
+
+      config.files.map(function (source) {
+        audio$.append('<source src="' + source.url + '" type="' + source.mimeType + '">')
+      })
+
+      head$.append(cssTheme$)
+
+      audio$.podlovewebplayer(config)
+
+    </script>
+  </body>
+</html>

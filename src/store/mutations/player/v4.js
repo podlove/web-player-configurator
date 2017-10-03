@@ -1,4 +1,4 @@
-import { reduce, cloneDeep } from 'lodash'
+import { reduce, cloneDeep, capitalize } from 'lodash'
 
 const fallbackColor = '#2B8AC6'
 
@@ -15,38 +15,20 @@ const tabs = {
   audio: false
 }
 
-const components = {
-  header: {
-    info: false,
-    error: false
-  },
-  progressbar: {
-    visible: true
-  },
-  tabs: {
-    chapters: {
-      visible: true
-    },
-    share: {
-      visible: true
-    },
-    audio: {
-      visible: true,
-      volume: false,
-      rate: false
-    },
-    download: {
-      visible: true
-    },
-    info: {
-      visible: true
-    }
-  },
-  controls: {
-    steppers: true,
-    chapters: true
-  }
-}
+const visibleComponents = [
+  'tabInfo',
+  'tabChapters',
+  'tabDownload',
+  'tabAudio',
+  'tabShare',
+  'poster',
+  'showTitle',
+  'episodeTitle',
+  'subtitle',
+  'progressbar',
+  'controlSteppers',
+  'controlChapters'
+]
 
 const mutations = {
   setMainColor (state, color) {
@@ -57,8 +39,16 @@ const mutations = {
     state.player.v4.theme.highlight = color
   },
 
-  setAvailableTabs (state, {tab, visible}) {
-    state.player.v4.components.tabs[tab] = visible ? components.tabs[tab] : undefined
+  setComponent (state, { component, visible }) {
+    if (visible) {
+      state.player.v4.visibleComponents = [
+        ...state.player.v4.visibleComponents,
+        component
+      ]
+    } else {
+      state.player.v4.visibleComponents =
+        state.player.v4.visibleComponents.filter(item => item !== component)
+    }
   },
 
   setActiveTab (state, tab) {
@@ -93,7 +83,7 @@ export default {
     v4: cloneDeep({
       theme,
       tabs,
-      components
+      visibleComponents
     })
   },
   mutations

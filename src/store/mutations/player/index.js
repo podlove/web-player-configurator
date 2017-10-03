@@ -3,6 +3,7 @@ import positions from './positions'
 import meta from './meta'
 
 import v4 from './v4'
+import v3 from './v3'
 import v2 from './v2'
 
 const state = {
@@ -10,6 +11,7 @@ const state = {
     ...players.state,
     ...positions.state,
     ...v4.state,
+    ...v3.state,
     ...v2.state,
     meta: meta.state
   }
@@ -19,6 +21,7 @@ const mutations = {
   ...players.mutations,
   ...positions.mutations,
   ...v4.mutations,
+  ...v3.mutations,
   ...v2.mutations
 }
 

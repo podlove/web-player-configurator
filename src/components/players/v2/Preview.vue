@@ -16,6 +16,8 @@ import { mapState } from 'vuex'
 import { jQuery } from 'jquery'
 import '@/../static/v2/podlove-web-player.js'
 
+window.jQuery.fn.v2player = window.jQuery.fn.podlovewebplayer
+
 export default {
   props: ['config'],
   methods: {
@@ -27,7 +29,7 @@ export default {
       }
 
       this.$el.appendChild(audioNode.get(0))
-      audioNode.podlovewebplayer(config)
+      audioNode.v2player(config)
     }
   },
   mounted: function () {

@@ -21,26 +21,26 @@
           <h4>Tabs</h4>
           <el-form label-position="top" label-width="100px">
             <el-form-item label="Available">
-                <el-checkbox @input="setInfoTab" :checked="availableTabs.info" label="info">Info</el-checkbox>
-                <el-checkbox @input="setChaptersTab" :checked="availableTabs.chapters" label="chapters">Chapters</el-checkbox>
-                <el-checkbox @input="setShareTab" :checked="availableTabs.share" label="share">Share</el-checkbox>
-                <el-checkbox @input="setDownloadTab" :checked="availableTabs.download" label="download">Download</el-checkbox>
-                <el-checkbox @input="setAudioTab" :checked="availableTabs.audio" label="audio">Audio</el-checkbox>
+                <el-checkbox @input="visible => setComponent('tabInfo', visible)" :checked="isVisible('tabInfo')" label="info">Info</el-checkbox>
+                <el-checkbox @input="visible => setComponent('tabChapters', visible)" :checked="isVisible('tabChapters')" label="chapters">Chapters</el-checkbox>
+                <el-checkbox @input="visible => setComponent('tabShare', visible)" :checked="isVisible('tabShare')" label="share">Share</el-checkbox>
+                <el-checkbox @input="visible => setComponent('tabDownload', visible)" :checked="isVisible('tabDownload')" label="download">Download</el-checkbox>
+                <el-checkbox @input="visible => setComponent('tabAudio', visible)" :checked="isVisible('tabAudio')" label="audio">Audio</el-checkbox>
             </el-form-item>
 
             <el-form-item label="Default Active">
               <el-select clearable @input="setActiveTab" :value="activeTab" placeholder="Select" :disabled="
-                !availableTabs.info &&
-                !availableTabs.chapters &&
-                !availableTabs.share &&
-                !availableTabs.download &&
-                !availableTabs.audio
+                !isVisible('tabInfo') &&
+                !isVisible('tabChapters') &&
+                !isVisible('tabShare') &&
+                !isVisible('tabDownload') &&
+                !isVisible('tabAudio')
               ">
-                <el-option value="info" label="Info" v-if="availableTabs.info"></el-option>
-                <el-option value="chapters" label="Chapters" v-if="availableTabs.chapters"></el-option>
-                <el-option value="share" label="Share" v-if="availableTabs.share"></el-option>
-                <el-option value="download" label="Download" v-if="availableTabs.download"></el-option>
-                <el-option value="audio" label="Audio" v-if="availableTabs.audio"></el-option>
+                <el-option value="info" label="Info" v-if="isVisible('tabInfo')"></el-option>
+                <el-option value="chapters" label="Chapters" v-if="isVisible('tabChapters')"></el-option>
+                <el-option value="share" label="Share" v-if="isVisible('tabShare')"></el-option>
+                <el-option value="download" label="Download" v-if="isVisible('tabDownload')"></el-option>
+                <el-option value="audio" label="Audio" v-if="isVisible('tabAudio')"></el-option>
               </el-select>
             </el-form-item>
           </el-form>
@@ -53,8 +53,11 @@
           <h4>Components</h4>
            <el-form label-position="top" label-width="100px">
             <el-form-item>
-              <el-checkbox class="block-checkbox" @input="setHeader" :checked="header" label="chapters">Header</el-checkbox>
-              <el-checkbox class="block-checkbox" @input="setProgressBar" :checked="progressbar" label="chapters">Progress</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="visible => setComponent('poster', visible)" :checked="isVisible('poster')" label="chapters">Poster</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="visible => setComponent('showTitle', visible)" :checked="isVisible('showTitle')" label="chapters">Show Title</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="visible => setComponent('episodeTitle', visible)" :checked="isVisible('episodeTitle')" label="chapters">Episode Title</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="visible => setComponent('subtitle', visible)" :checked="isVisible('subtitle')" label="chapters">Subtitle</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="visible => setComponent('progressbar', visible)" :checked="isVisible('progressbar')" label="progressbar">Progress</el-checkbox>
             </el-form-item>
            </el-form>
         </el-col>
@@ -63,25 +66,25 @@
           <h4>Controls</h4>
             <el-form label-position="top" label-width="100px">
             <el-form-item>
-              <el-checkbox class="block-checkbox" @input="setStepperControls" :checked="controls.steppers" label="steppers">Steppers</el-checkbox>
-              <el-checkbox class="block-checkbox" @input="setChaptersControls" :checked="controls.chapters" label="chapters">Chapters</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="visible => setComponent('controlSteppers', visible)" :checked="isVisible('controlSteppers')" label="steppers">Steppers</el-checkbox>
+              <el-checkbox class="block-checkbox" @input="visible => setComponent('controlChapters', visible)" :checked="isVisible('controlChapters')" label="chapters">Chapters</el-checkbox>
             </el-form-item>
            </el-form>
         </el-col>
       </el-row>
-
-      <el-row :gutter="30">
-        <el-col :span="24">
-          <h3>Preview</h3>
-          <preview @ready="onReady" :config="playerConfig"></preview>
-        </el-col>
-      </el-row>
     </div>
+
+    <el-row :gutter="30">
+      <el-col :span="24">
+        <h3>Preview</h3>
+        <preview @ready="onReady" :config="playerConfig"></preview>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-import { get, head } from 'lodash'
+import { get, head, capitalize } from 'lodash'
 import Preview from './Preview.vue'
 
 export default {
@@ -97,34 +100,12 @@ export default {
     tabs () {
       return this.$store.state.player.v4.tabs
     },
-    components () {
-      return this.$store.state.player.v4.components
-    },
-    availableTabs () {
-      return {
-        info: get(this.components, 'tabs.info.visible', false),
-        chapters: get(this.components, 'tabs.chapters.visible', false),
-        share: get(this.components, 'tabs.share.visible', false),
-        download: get(this.components, 'tabs.download.visible', false),
-        audio: get(this.components, 'tabs.audio.visible', false)
-      }
-    },
-    controls () {
-      return {
-        chapters: get(this.components, 'controls.chapters', false),
-        steppers: get(this.components, 'controls.steppers', false)
-      }
+    visibleComponents () {
+      return this.$store.state.player.v4.visibleComponents
     },
     activeTab () {
       const activeTab = Object.keys(this.tabs).filter(tab => this.tabs[tab])
       return head(activeTab)
-    },
-    header () {
-      const active = get(this.components, 'header', false)
-      return !!active
-    },
-    progressbar () {
-      return get(this.components, 'progressbar.visible', false)
     },
     playerConfig () {
       const meta = this.$store.state.player.meta
@@ -136,7 +117,7 @@ export default {
         audio: meta.files,
         chapters: meta.chapters,
         contributors: meta.contributors,
-        components: this.components,
+        visibleComponents: this.visibleComponents,
         reference: {
           base: '/static/v4'
         },
@@ -160,45 +141,16 @@ export default {
       this.$store.commit('setHighlightColor', color)
       this.initPlayer(this.playerConfig)
     },
-    setInfoTab (visible) {
-      this.$store.commit('setAvailableTabs', {tab: 'info', visible})
-      this.initPlayer(this.playerConfig)
-    },
-    setChaptersTab (visible) {
-      this.$store.commit('setAvailableTabs', {tab: 'chapters', visible})
-      this.initPlayer(this.playerConfig)
-    },
-    setShareTab (visible) {
-      this.$store.commit('setAvailableTabs', {tab: 'share', visible})
-      this.initPlayer(this.playerConfig)
-    },
-    setDownloadTab (visible) {
-      this.$store.commit('setAvailableTabs', {tab: 'download', visible})
-      this.initPlayer(this.playerConfig)
-    },
-    setAudioTab (visible) {
-      this.$store.commit('setAvailableTabs', {tab: 'audio', visible})
+    setComponent (component, visible) {
+      this.$store.commit('setComponent', { component, visible })
       this.initPlayer(this.playerConfig)
     },
     setActiveTab (tab) {
       this.$store.commit('setActiveTab', tab)
       this.initPlayer(this.playerConfig)
     },
-    setHeader (active) {
-      this.$store.commit('setHeaderComponent', active)
-      this.initPlayer(this.playerConfig)
-    },
-    setProgressBar (active) {
-      this.$store.commit('setProgressBarComponent', active)
-      this.initPlayer(this.playerConfig)
-    },
-    setStepperControls (active) {
-      this.$store.commit('setSteppersComponent', active)
-      this.initPlayer(this.playerConfig)
-    },
-    setChaptersControls (active) {
-      this.$store.commit('setChaptersComponent', active)
-      this.initPlayer(this.playerConfig)
+    isVisible (component) {
+      return this.visibleComponents.indexOf(component) !== -1
     },
     onReady(store) {
       this.playerReady = true
@@ -219,7 +171,6 @@ export default {
   }
 }
 </script>
-
 
 <style lang="scss">
   @import '../../../styles/variables';
