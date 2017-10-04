@@ -28,18 +28,19 @@ const pluginPath = 'static/v2'
 
 const mutations = {
   setChaptersVisible (state, visible) {
-    state.player.v2.chaptersVisible = visible
+    state.chaptersVisible = visible
   }
 }
 
+const state = cloneDeep({
+  pluginPath,
+  features,
+  ...params
+})
+
 export default {
-  state: {
-    v2: cloneDeep({
-      pluginPath,
-      features,
-      ...params
-    })
-  },
+  namespaced: true,
+  state,
   mutations
 }
 

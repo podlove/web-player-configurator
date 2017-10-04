@@ -39,6 +39,7 @@ export default {
 
       return {
         ...v3,
+        ...v3.params,
         ...meta.episode,
         show: meta.show,
         files: meta.files,
@@ -58,12 +59,12 @@ export default {
       this.renderPlayer()
     },
     setChaptersVisible (visible) {
-      this.$store.commit('setChaptersVisible', visible)
-      this.renderPlayer()
+      this.$store.commit('player/v3/setChaptersVisible', visible)
+      this.renderPlayer(this.playerConfig)
     },
     setActiveTheme (theme) {
-      this.$store.commit('setTheme', theme)
-      this.renderPlayer()
+      this.$store.commit('player/v3/setTheme', theme)
+      this.renderPlayer(this.playerConfig)
     }
   },
   components: {

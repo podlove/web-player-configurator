@@ -84,7 +84,9 @@
 </template>
 
 <script>
-import { get, head, capitalize } from 'lodash'
+import { mapState } from 'vuex'
+import { head, capitalize } from 'lodash'
+import { get } from 'lodash/fp'
 import Preview from './Preview.vue'
 
 export default {
@@ -94,15 +96,11 @@ export default {
     }
   },
   computed: {
-    theme () {
-      return this.$store.state.player.v4.theme
-    },
-    tabs () {
-      return this.$store.state.player.v4.tabs
-    },
-    visibleComponents () {
-      return this.$store.state.player.v4.visibleComponents
-    },
+    ...mapState('player/v4', {
+      theme: get('theme'),
+      tabs: get('tabs'),
+      visibleComponents: get('visibleComponents')
+    }),
     activeTab () {
       const activeTab = Object.keys(this.tabs).filter(tab => this.tabs[tab])
       return head(activeTab)
@@ -134,19 +132,19 @@ export default {
       this.setTheme({...this.theme, highlight: color})
     },
     setMainThemeColor (color) {
-      this.$store.commit('setMainColor', color)
+      this.$store.commit('player/v4/setMainColor', color)
       this.initPlayer(this.playerConfig)
     },
     setHighlightThemeColor (color) {
-      this.$store.commit('setHighlightColor', color)
+      this.$store.commit('player/v4/setHighlightColor', color)
       this.initPlayer(this.playerConfig)
     },
     setComponent (component, visible) {
-      this.$store.commit('setComponent', { component, visible })
+      this.$store.commit('player/v4/setComponent', { component, visible })
       this.initPlayer(this.playerConfig)
     },
     setActiveTab (tab) {
-      this.$store.commit('setActiveTab', tab)
+      this.$store.commit('player/v4/setActiveTab', tab)
       this.initPlayer(this.playerConfig)
     },
     isVisible (component) {

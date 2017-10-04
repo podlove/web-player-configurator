@@ -50,22 +50,23 @@ const params = {
 
 const mutations = {
   setTheme (state, id) {
-    state.player.v3.activeTheme = id
+    state.activeTheme = id
   },
 
-  setActiveChapters (state, tab) {
-    state.player.v3.params.activeTab = tab
+  setChaptersVisible (state, active) {
+    state.params.activeTab = active ? 'chapters' : null
   }
 }
 
+const state = cloneDeep({
+  activeTheme,
+  themes,
+  params
+})
+
 export default {
-  state: {
-    v3: {
-      activeTheme,
-      themes,
-      params
-    }
-  },
+  namespaced: true,
+  state,
   mutations
 }
 

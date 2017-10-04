@@ -3,17 +3,17 @@
     <el-row>
       <el-col :span="18" class="players">
         <h2>Player</h2>
-        <player-v4 v-if="active === 'v4'"></player-v4>
-        <player-v3 v-if="active === 'v3'"></player-v3>
-        <player-v2 v-if="active === 'v2'"></player-v2>
-        <podigee v-if="active === 'podigee'"></podigee>
+        <player-v4 v-if="activePlayer === 'v4'"></player-v4>
+        <player-v3 v-if="activePlayer === 'v3'"></player-v3>
+        <player-v2 v-if="activePlayer === 'v2'"></player-v2>
+        <podigee v-if="activePlayer === 'podigee'"></podigee>
       </el-col>
       <el-col :span="6" class="sidebar">
         <h2>Config</h2>
         <el-form label-position="top" label-width="100px">
 
           <el-form-item label="Player">
-            <el-select :value="active" placeholder="Select" @input="changePlayer">
+            <el-select :value="activePlayer" placeholder="Select" @input="setPlayer">
               <el-option
                 v-for="item in players"
                 :key="item.id"
@@ -24,7 +24,7 @@
           </el-form-item>
 
           <el-form-item label="Position">
-            <el-select :value="position" placeholder="Select" @input="changePosition">
+            <el-select :value="activePosition" placeholder="Select" @input="setPosition">
               <el-option
                 v-for="item in positions"
                 :key="item.id"
@@ -42,27 +42,28 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
+import { get } from 'lodash/fp'
 
 import PlayerV2 from './players/v2/Config.vue'
 import PlayerV3 from './players/v3/Config.vue'
 import PlayerV4 from './players/v4/Config.vue'
-import Podigee from './players/Podigee.vue'
+import Podigee from './players/podigee/Config.vue'
 
 export default {
-  computed: mapState({
-    players: state => state.player.players,
-    active: state => state.player.active,
-    positions: state => state.player.positions,
-    position: state => state.player.position
-  }),
+  computed: {
+    ...mapState('player/settings', {
+      players: get('players'),
+      activePlayer: get('activePlayer'),
+      positions: get('positions'),
+      activePosition: get('activePosition')
+    })
+  },
   methods: {
-    changePlayer(id) {
-      this.$store.commit('setPlayer', id)
-    },
-    changePosition(id) {
-      this.$store.commit('setPosition', id)
-    }
+    ...mapMutations('player/settings', [
+      'setPlayer',
+      'setPosition'
+    ])
   },
   components: {
     PlayerV2,

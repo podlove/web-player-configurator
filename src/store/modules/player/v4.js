@@ -32,60 +32,61 @@ const visibleComponents = [
 
 const mutations = {
   setMainColor (state, color) {
-    state.player.v4.theme.main = color || fallbackColor
+    state.theme.main = color || fallbackColor
   },
 
   setHighlightColor (state, color) {
-    state.player.v4.theme.highlight = color
+    state.theme.highlight = color
   },
 
   setComponent (state, { component, visible }) {
     if (visible) {
-      state.player.v4.visibleComponents = [
-        ...state.player.v4.visibleComponents,
+      state.visibleComponents = [
+        ...state.visibleComponents,
         component
       ]
     } else {
-      state.player.v4.visibleComponents =
-        state.player.v4.visibleComponents.filter(item => item !== component)
+      state.visibleComponents =
+        state.visibleComponents.filter(item => item !== component)
     }
   },
 
   setActiveTab (state, tab) {
-    state.player.v4.tabs = reduce(tabs, (result, active, name) => ({
+    state.tabs = reduce(tabs, (result, active, name) => ({
       ...result,
       [name]: name === tab
     }), {})
   },
 
   setHeaderComponent (state, active) {
-    state.player.v4.components.header = active ? components.header : {
+    state.components.header = active ? components.header : {
       info: undefined,
       error: undefined
     }
   },
 
   setProgressBarComponent (state, active) {
-    state.player.v4.components.progressbar.visible = active ? true : undefined
+    state.components.progressbar.visible = active ? true : undefined
   },
 
   setSteppersComponent (state, active) {
-    state.player.v4.components.controls.steppers = active ? true : undefined
+    state.components.controls.steppers = active ? true : undefined
   },
 
   setChaptersComponent (state, active) {
-    state.player.v4.components.controls.chapters = active ? true : undefined
+    state.components.controls.chapters = active ? true : undefined
   }
 }
 
+const state = cloneDeep({
+  theme,
+  tabs,
+  visibleComponents
+})
+
 export default {
-  state: {
-    v4: cloneDeep({
-      theme,
-      tabs,
-      visibleComponents
-    })
-  },
+  namespaced: true,
+  state,
   mutations
 }
 

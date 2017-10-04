@@ -38,7 +38,7 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="scss" scoped>
   @import '~/static/v2/styles/podlove-web-player.css';
 </style>
 
