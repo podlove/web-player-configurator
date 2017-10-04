@@ -30,7 +30,7 @@ const players = [{
   label: 'Podigee Player'
 }]
 
-const activePlayer = head(players).id
+const activePlayer = 'podigee'
 const activePosition = head(positions).id
 
 const state = {

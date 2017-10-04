@@ -3,7 +3,6 @@
     <div class="config">
       <el-row>
         <el-col :span="24">
-          <h3>Preview</h3>
           <preview :config="playerConfig" @ready="onReady"></preview>
         </el-col>
       </el-row>
@@ -13,7 +12,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { get } from 'lodash/fp'
+import { get } from 'lodash'
 
 import Preview from './Preview.vue'
 
@@ -21,12 +20,23 @@ export default {
   computed: {
     playerConfig () {
       const meta = this.$store.state.player.meta
+      const { title, poster, subtitle, summary } = meta.episode
 
       return {
-        ...meta.episode,
-        show: meta.show,
-        files: meta.files,
-        chapters: meta.chapters
+        episode: {
+          title,
+          subtitle,
+          description: summary,
+          media: meta.files.reduce((result, file) => {
+            const type = file.mimeType.split('/')
+
+            result[type[1]] = file.url
+
+            return result
+          }, {}),
+          coverUrl: poster,
+          chaptermarks: meta.chapters
+        }
       }
     }
   },

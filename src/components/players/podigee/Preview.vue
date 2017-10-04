@@ -3,7 +3,6 @@
 <script>
 import { mapState } from 'vuex'
 import { jQuery } from 'jquery'
-import '@/../static/podigee/podigee-podcast-player.js'
 
 export default {
   props: ['config'],
@@ -14,11 +13,12 @@ export default {
         this.$el.removeChild(this.$el.firstChild);
       }
 
-      window.podigeeConfig = this.config
+      window.podigeeConfig = config
+      console.log(window.podigeeConfig)
 
       const embedScript = document.createElement('script')
       embedScript.setAttribute('class', 'podigee-podcast-player')
-      embedScript.setAttribute('src', 'https://cdn.podigee.com/podcast-player/javascripts/podigee-podcast-player.js')
+      embedScript.setAttribute('src', 'static/podigee/podigee-podcast-player.js')
       embedScript.setAttribute('data-configuration', 'podigeeConfig')
 
       this.$el.appendChild(embedScript)
