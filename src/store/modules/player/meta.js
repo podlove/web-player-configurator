@@ -1,3 +1,5 @@
+import { mergeState } from '../../utils'
+
 const show = {
   title: 'Freak Show',
   subtitle: 'Menschen! Technik! Sensationen!',
@@ -95,7 +97,14 @@ const state = {
   chapters
 }
 
+const mutations = {
+  setMeta (state, meta) {
+    mergeState(state, meta)
+  }
+}
+
 export default {
   namespaced: true,
-  state
+  state,
+  mutations
 }

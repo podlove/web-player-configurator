@@ -1,3 +1,4 @@
+import { mergeState } from '../../utils'
 import { cloneDeep, head } from 'lodash'
 
 const themes = [{
@@ -55,6 +56,10 @@ const mutations = {
 
   setChaptersVisible (state, active) {
     state.params.activeTab = active ? 'chapters' : null
+  },
+
+  setConfig (state, config = {}) {
+    mergeState(state, config)
   }
 }
 

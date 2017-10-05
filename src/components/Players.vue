@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import { mapState, mapMutations, mapActions } from 'vuex'
 import { get } from 'lodash/fp'
 
 import PlayerV2 from './players/v2/Config.vue'
@@ -63,7 +63,11 @@ export default {
     ...mapMutations('player/settings', [
       'setPlayer',
       'setPosition'
-    ])
+    ]),
+    ...mapActions('player', ['boot'])
+  },
+  mounted () {
+    this.boot()
   },
   components: {
     PlayerV2,

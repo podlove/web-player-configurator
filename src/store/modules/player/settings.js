@@ -1,4 +1,5 @@
 import { head } from 'lodash'
+import { mergeState } from '../../utils'
 
 const positions = [{
   id: 'auto',
@@ -30,7 +31,7 @@ const players = [{
   label: 'Podigee Player'
 }]
 
-const activePlayer = 'podigee'
+const activePlayer = head(players).id
 const activePosition = head(positions).id
 
 const state = {
@@ -46,6 +47,9 @@ const mutations = {
   },
   setPlayer (state, id) {
     state.activePlayer = id
+  },
+  setConfig (state, settings) {
+    mergeState(state, settings)
   }
 }
 

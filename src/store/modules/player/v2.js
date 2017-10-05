@@ -1,3 +1,4 @@
+import { mergeState } from '../../utils'
 import { cloneDeep } from 'lodash'
 
 const features = [
@@ -29,6 +30,10 @@ const pluginPath = 'static/v2'
 const mutations = {
   setChaptersVisible (state, visible) {
     state.chaptersVisible = visible
+  },
+
+  setConfig (state, config = {}) {
+    mergeState(state, config)
   }
 }
 

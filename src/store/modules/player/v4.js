@@ -1,3 +1,4 @@
+import { mergeState } from '../../utils'
 import { reduce, cloneDeep, capitalize } from 'lodash'
 
 const fallbackColor = '#2B8AC6'
@@ -75,6 +76,10 @@ const mutations = {
 
   setChaptersComponent (state, active) {
     state.components.controls.chapters = active ? true : undefined
+  },
+
+  setConfig (state, config = {}) {
+    mergeState(state, config)
   }
 }
 
