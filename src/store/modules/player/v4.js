@@ -1,5 +1,4 @@
-import { mergeState } from '../../utils'
-import { reduce, cloneDeep, capitalize } from 'lodash'
+import { reduce, cloneDeep, capitalize, merge } from 'lodash'
 
 const fallbackColor = '#2B8AC6'
 
@@ -41,12 +40,14 @@ const mutations = {
   },
 
   setComponent (state, { component, visible }) {
-    if (visible) {
+    if (visible && !state.visibleComponents.includes(component)) {
       state.visibleComponents = [
         ...state.visibleComponents,
         component
       ]
-    } else {
+    }
+
+    if (!visible && state.visibleComponents.includes(component)) {
       state.visibleComponents =
         state.visibleComponents.filter(item => item !== component)
     }
@@ -79,7 +80,7 @@ const mutations = {
   },
 
   setConfig (state, config = {}) {
-    mergeState(state, config)
+    merge(state, config)
   }
 }
 
@@ -89,9 +90,16 @@ const state = cloneDeep({
   visibleComponents
 })
 
+const getters = {
+  config (state) {
+    return state
+  }
+}
+
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
+  getters
 }
 

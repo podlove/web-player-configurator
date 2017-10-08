@@ -1,5 +1,4 @@
-import { mergeState } from '../../utils'
-import { cloneDeep, head } from 'lodash'
+import { cloneDeep, head, extend } from 'lodash'
 
 const themes = [{
   name: 'PWP Blue Orange',
@@ -59,7 +58,7 @@ const mutations = {
   },
 
   setConfig (state, config = {}) {
-    mergeState(state, config)
+    extend(state, config)
   }
 }
 
@@ -69,9 +68,19 @@ const state = cloneDeep({
   params
 })
 
+const getters = {
+  config ({ activeTheme }) {
+    return {
+      activeTheme,
+      params
+    }
+  }
+}
+
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
+  getters
 }
 

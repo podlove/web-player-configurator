@@ -1,5 +1,4 @@
-import { head } from 'lodash'
-import { mergeState } from '../../utils'
+import { head, extend } from 'lodash'
 
 const positions = [{
   id: 'auto',
@@ -49,12 +48,22 @@ const mutations = {
     state.activePlayer = id
   },
   setConfig (state, settings) {
-    mergeState(state, settings)
+    extend(state, settings)
+  }
+}
+
+const getters = {
+  config ({ activePosition, activePlayer }) {
+    return {
+      activePosition,
+      activePlayer
+    }
   }
 }
 
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
+  getters
 }

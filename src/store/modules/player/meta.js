@@ -1,4 +1,4 @@
-import { mergeState } from '../../utils'
+import { extend } from 'lodash'
 
 const show = {
   title: 'Freak Show',
@@ -99,7 +99,7 @@ const state = {
 
 const mutations = {
   setMeta (state, meta) {
-    mergeState(state, meta)
+    extend(state, meta)
   }
 }
 

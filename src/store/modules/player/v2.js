@@ -1,5 +1,4 @@
-import { mergeState } from '../../utils'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, extend } from 'lodash'
 
 const features = [
   'current',
@@ -33,7 +32,7 @@ const mutations = {
   },
 
   setConfig (state, config = {}) {
-    mergeState(state, config)
+    extend(state, config)
   }
 }
 
@@ -43,9 +42,16 @@ const state = cloneDeep({
   ...params
 })
 
+const getters = {
+  config (state) {
+    return state
+  }
+}
+
 export default {
   namespaced: true,
   state,
-  mutations
+  mutations,
+  getters
 }
 

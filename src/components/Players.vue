@@ -35,7 +35,7 @@
           </el-form-item>
         </el-form>
 
-        <el-button type="primary" size="large">Save</el-button>
+        <el-button type="primary" size="large" @click="save()">Save</el-button>
       </el-col>
     </el-row>
   </div>
@@ -64,7 +64,7 @@ export default {
       'setPlayer',
       'setPosition'
     ]),
-    ...mapActions('player', ['boot'])
+    ...mapActions('player', ['boot', 'save'])
   },
   mounted () {
     this.boot()
