@@ -7,20 +7,20 @@
             <el-row>
               <el-col :span="12">
                 <el-form-item label="Theme">
-                  <el-select @input="setActiveTheme" :value="activeTheme" placeholder="Select">
+                  <el-select @input="setActiveTheme" :value="activeTheme" :placeholder="translations.select">
                     <el-option v-for="(theme, index) in themes" :value="theme.id" :label="theme.name" v-bind:key="index"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="Chapters">
-                  <el-checkbox @input="setChaptersVisible" :checked="playerConfig.chaptersVisible" label="info">Show Chapters On Load</el-checkbox>
+                <el-form-item :label="translations.chapters">
+                  <el-checkbox @input="setChaptersVisible" :checked="playerConfig.chaptersVisible" label="info">{{ translations.chapters_on_load }}</el-checkbox>
                 </el-form-item>
               </el-col>
             </el-row>
           </el-form>
 
-          <h3>Preview</h3>
+          <h3>{{ translations.preview }}</h3>
           <preview :config="playerConfig" @ready="onReady"></preview>
         </el-col>
       </el-row>
@@ -32,6 +32,11 @@
 import Preview from './Preview.vue'
 
 export default {
+  data () {
+    return {
+      translations
+    }
+  },
   computed: {
     playerConfig () {
       const meta = this.$store.state.player.meta

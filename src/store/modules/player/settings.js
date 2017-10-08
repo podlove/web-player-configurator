@@ -1,17 +1,19 @@
+/* global translations */
+
 import { head, extend } from 'lodash'
 
 const positions = [{
   id: 'auto',
-  label: 'Insert Player automatically'
+  label: translations.position_auto
 }, {
   id: 'beginning',
-  label: 'Insert Player at Beginning'
+  label: translations.position_beginning
 }, {
   id: 'end',
-  label: 'Insert Player at End'
+  label: translations.position_end
 }, {
   id: 'not',
-  label: 'No automatic Insertion'
+  label: translations.position_not
 }]
 
 const players = [{
@@ -37,7 +39,7 @@ const state = {
   activePosition,
   positions,
   activePlayer,
-  players,
+  players
 }
 
 const mutations = {

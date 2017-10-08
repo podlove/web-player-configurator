@@ -1,4 +1,4 @@
-import { reduce, cloneDeep, capitalize, merge } from 'lodash'
+import { reduce, cloneDeep, merge } from 'lodash'
 
 const fallbackColor = '#2B8AC6'
 
@@ -58,25 +58,6 @@ const mutations = {
       ...result,
       [name]: name === tab
     }), {})
-  },
-
-  setHeaderComponent (state, active) {
-    state.components.header = active ? components.header : {
-      info: undefined,
-      error: undefined
-    }
-  },
-
-  setProgressBarComponent (state, active) {
-    state.components.progressbar.visible = active ? true : undefined
-  },
-
-  setSteppersComponent (state, active) {
-    state.components.controls.steppers = active ? true : undefined
-  },
-
-  setChaptersComponent (state, active) {
-    state.components.controls.chapters = active ? true : undefined
   },
 
   setConfig (state, config = {}) {
