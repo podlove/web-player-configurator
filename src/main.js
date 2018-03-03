@@ -16,7 +16,7 @@ Vue.use(VueResource)
 
 /* eslint-disable no-new */
 new Vue({
-  el: '#app',
+  el: '#player-config',
   router,
   store,
   template: '<App/>',

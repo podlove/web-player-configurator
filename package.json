@@ -1,15 +1,15 @@
 {
-  "name": "podlove-configurator",
+  "name": "@podlove/web-player-configurator",
   "version": "1.0.0",
   "description": "Podlove Web Player Configurator",
   "author": "Alexander Heimbuch <github@heimbu.ch>",
-  "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
     "start": "node build/dev-server.js",
     "build": "node build/build.js",
     "mock-server": "json-server --watch mock-server/db.json --routes mock-server/routes.json"
   },
+  "files": ["dist/"],
   "dependencies": {
     "element-ui": "^1.4.4",
     "jquery": "^3.2.1",

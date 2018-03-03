@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="app">
+  <div class="player-configurator">
     <router-view></router-view>
   </div>
 </template>
@@ -24,7 +24,7 @@ export default {
     box-sizing: inherit;
   }
 
-  .app {
+  .player-configurator {
     height: 100%;
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
     padding: $spacing;
